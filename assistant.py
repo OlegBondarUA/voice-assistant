@@ -1,46 +1,50 @@
+import os
 import random
-import speech_recognition as sr
+
+import vosk
 import simpleaudio as sa
+import wave
+import json
+import pyaudio
 
 
-def recognize_speech():
-    recognizer = sr.Recognizer()
-    with sr.Microphone() as source:
-        print("Скажіть щось...")
-        audio = recognizer.listen(source)
+def recognize_speech_vosk(model):
+    recognizer = vosk.KaldiRecognizer(model, 16000)
+    audio = pyaudio.PyAudio()
+    stream = audio.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192)
+    stream.start_stream()
 
-    try:
-        # Розпізнавання української мови
-        text = recognizer.recognize_google(audio, language="uk-UA")
-        print(f"Ви сказали: {text}")
-        return text.lower()
-    except sr.UnknownValueError:
-        print("Не вдалося розпізнати мову.")
-    except sr.RequestError as e:
-        print(f"Помилка сервісу розпізнавання мови; {e}")
+    print("Скажіть щось...")
 
-    return ""
+    while True:
+        data = stream.read(4096, exception_on_overflow=False)
+        if recognizer.AcceptWaveform(data):
+            result = recognizer.Result()
+            text = json.loads(result).get('text', '')
+            print(f"Ви сказали: {text}")
+            return text.lower()
 
 
-def respond_to_jarvis():
-    greetings = ['audio_responses/greet1.wav',
-                 'audio_responses/greet2.wav',
-                 'audio_responses/greet3.wav']
+def load_greetings():
+    return [sa.WaveObject.from_wave_file('audio_responses/greet1.wav'),
+            sa.WaveObject.from_wave_file('audio_responses/greet2.wav'),
+            sa.WaveObject.from_wave_file('audio_responses/greet3.wav')]
 
-    # Вибір випадкового привітання
+
+def respond_to_jarvis(greetings):
     response = random.choice(greetings)
-
-    # Відтворення файлу
-    wave_obj = sa.WaveObject.from_wave_file(response)
-    play_obj = wave_obj.play()
+    play_obj = response.play()
     play_obj.wait_done()
 
 
 def main():
+    model = vosk.Model("models_vosk/uk")
+    greetings = load_greetings()
+
     while True:
-        speech = recognize_speech()
-        if "саша" in speech:
-            respond_to_jarvis()
+        speech = recognize_speech_vosk(model)
+        if "джарвіс" in speech:
+            respond_to_jarvis(greetings)
 
 
 if __name__ == "__main__":
