@@ -1,11 +1,11 @@
-import os
 import random
 
 import vosk
 import simpleaudio as sa
-import wave
 import json
 import pyaudio
+
+from commands.macbook.volume_control import *
 
 
 def recognize_speech_vosk(model):
@@ -37,6 +37,18 @@ def respond_to_jarvis(greetings):
     play_obj.wait_done()
 
 
+def handle_macbook_command(speech):
+    if "зроби звук гучніше" in speech:
+        increase_volume()
+        print("Збільшую гучність")
+    elif "зроби звук тихіше" in speech:
+        decrease_volume()
+        print("Зменшую гучність")
+    elif "вимкни звук" in speech:
+        mute_volume()
+        print("Вимикаю звук")
+
+
 def main():
     model = vosk.Model("models_vosk/uk")
     greetings = load_greetings()
@@ -45,6 +57,8 @@ def main():
         speech = recognize_speech_vosk(model)
         if "джарвіс" in speech:
             respond_to_jarvis(greetings)
+        else:
+            handle_macbook_command(speech)
 
 
 if __name__ == "__main__":
