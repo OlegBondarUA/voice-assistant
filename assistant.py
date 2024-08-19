@@ -27,7 +27,3 @@ def main():
             respond_to_jarvis(greetings)
         else:
             command_handler.handle_macbook_command(speech)
-
-
-if __name__ == "__main__":
-    main()
