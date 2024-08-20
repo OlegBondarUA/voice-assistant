@@ -2,3 +2,4 @@ speechrecognition
 simpleaudio
 vosk
 pyaudio
+psutil
