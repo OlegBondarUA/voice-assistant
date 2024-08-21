@@ -23,7 +23,7 @@ def main():
 
     while True:
         speech = speech_handler.recognize_speech()
-        if "алекс" in speech:
+        if "вова" in speech:
             respond_to_jarvis(greetings)
         else:
             command_handler.handle_macbook_command(speech)

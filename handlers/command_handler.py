@@ -3,16 +3,16 @@ from commands.macbook.browser_control import open_browser
 
 
 class CommandHandler:
+    def __init__(self):
+        self.commands = {
+            "зроби звук гучніше": (increase_volume, "Збільшую гучність"),
+            "зроби звук тихіше": (decrease_volume, "Зменшую гучність"),
+            "вимкни звук": (mute_volume, "Вимикаю звук"),
+            "браузер": (open_browser, "відкриваю браузер"),
+        }
+
     def handle_macbook_command(self, speech):
-        if "зроби звук гучніше" in speech:
-            increase_volume()
-            print("Збільшую гучність")
-        elif "зроби звук тихіше" in speech:
-            decrease_volume()
-            print("Зменшую гучність")
-        elif "вимкни звук" in speech:
-            mute_volume()
-            print("Вимикаю звук")
-        elif "браузер" in speech:
-            open_browser()
-            print("відкриваю браузер")
+        for command, (action, message) in self.commands.items():
+            if command in speech:
+                action()
+                print(message)
