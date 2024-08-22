@@ -1,6 +1,7 @@
 import webbrowser
 import psutil
 import subprocess
+from urllib.parse import quote
 
 
 def activate_browser(browser_name):
@@ -28,3 +29,17 @@ def open_browser():
 
     print(f"Відкриваю браузер за замовчуванням: {default_browser}")
     webbrowser.open_new_tab("https://www.google.com")
+
+
+def open_youtube():
+    webbrowser.open_new_tab("https://www.youtube.com")
+
+
+def search_youtube(query):
+    encoded_query = quote(query)
+    url = f"https://www.youtube.com/results?search_query={encoded_query}"
+    webbrowser.open_new_tab(url)
+
+
+def play_youtube_video(query):
+    search_youtube(query)
