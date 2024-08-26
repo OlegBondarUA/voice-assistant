@@ -9,7 +9,7 @@ class CommandHandler:
             "зроби звук тихіше": (decrease_volume, "Зменшую гучність"),
             "вимкни звук": (mute_volume, "Вимикаю звук"),
             "браузер": (open_browser, "відкриваю браузер"),
-            "відкрий ютуб": (open_youtube, "Відкриваю YouTube"),
+            "ютуб": (open_youtube, "Відкриваю YouTube"),
         }
 
     def handle_macbook_command(self, speech):

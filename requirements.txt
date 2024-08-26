@@ -1,5 +1,5 @@
 speechrecognition
-simpleaudio
-vosk
-pyaudio
-psutil
+simpleaudio~=1.0.4
+vosk~=0.3.44
+pyaudio~=0.2.14
+psutil~=6.0.0
