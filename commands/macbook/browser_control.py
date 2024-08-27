@@ -1,4 +1,6 @@
 import webbrowser
+import time
+import pyautogui
 import psutil
 import subprocess
 from urllib.parse import quote
@@ -107,3 +109,6 @@ def search_youtube(query):
 
 def play_youtube_video(query):
     search_youtube(query)
+    time.sleep(5)  # Дочекатись, поки сторінка завантажиться
+    # Знайти координати першого відео і натиснути на нього
+    pyautogui.click(500, 300)
